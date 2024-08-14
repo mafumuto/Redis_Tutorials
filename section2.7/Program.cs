@@ -25,5 +25,16 @@ Console.WriteLine($"Key 1: {key1}");
 Console.WriteLine($"Key 2: {key2}");
 #endregion
 
+#region Non-Prepared Script
 
+string nonPreparedScript = @"
+    local id = redis.call('incr', KEYS[1])
+    local key =  'key:'  .. id
+    redis.call('set', key, ARGV[1])
+    return key
+";
+var key3 = db.ScriptEvaluate(nonPreparedScript, new RedisKey[] { "autoIncrement" }, new RedisValue[] { "Okay Another Trial" });
+
+Console.WriteLine($"Key 3: {key3}");
+#endregion
 //end coding challenge
