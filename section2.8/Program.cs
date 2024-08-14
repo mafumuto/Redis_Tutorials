@@ -16,8 +16,8 @@ transaction.SortedSetAddAsync("person:name:Steve", "person:1", 0);
 transaction.SortedSetAddAsync("person:postal_code:32999", "person:1", 0);
 transaction.SortedSetAddAsync("person:age", "person:1", 32);
 
-var success1 = transaction.Execute();
-Console.WriteLine($"Transaction Successful - 1: {success1}");
+var success = transaction.Execute();
+Console.WriteLine($"Transaction Successful - 1: {success}");
 
 var person1Entry = db.HashGetAll("person:1");
 transaction.AddCondition(Condition.HashEqual("person:1", "age", 32));
@@ -25,8 +25,15 @@ transaction.HashIncrementAsync("person:1", "age");
 transaction.SortedSetIncrementAsync("person:age", "person:1", 1);
 
 
-var success2 = transaction.Execute();
-Console.WriteLine($"Transaction Successful - 2: {success2}");
+success = transaction.Execute();
+Console.WriteLine($"Transaction Successful - 2: {success}");
+
+transaction.AddCondition(Condition.HashEqual("person:1", "age", 31));
+transaction.HashIncrementAsync("person:1", "age");
+transaction.SortedSetIncrementAsync("person:age", "person:1", 1);
+success = transaction.Execute();
+
+Console.WriteLine($"Transaction Successful - 3: {success}");
 
 var ageSet = db.SortedSetScan("person:age");
 
