@@ -16,10 +16,10 @@ public class InitService : IHostedService
     {
         using var scope = _scopeFactory.CreateScope();
         var salesDb = scope.ServiceProvider.GetRequiredService<SalesContext>();
-        
+
         // TODO Section 3.2 Step 2
         // add cache invalidation logic here.
-        
+        var cache = scope.ServiceProvider.GetRequiredService<IDistributedCache>();
         // End Section 3.2 Step 2
 
         var cachePipe = new List<Task>

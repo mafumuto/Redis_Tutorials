@@ -15,7 +15,11 @@ builder.Services.AddHostedService<InitService>();
 
 // TODO Section 3.2 Step 1
 // call AddStackExchangeRedisCache here.
-
+builder.Services.AddStackExchangeRedisCache(x => x.ConfigurationOptions = new ConfigurationOptions
+{
+    EndPoints = {"localhost:6379"},
+    Password = ""
+});
 // End Section 3.2 Step 1
 var app = builder.Build();
 
